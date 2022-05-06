@@ -9,7 +9,7 @@ let ifRuLang = false;
 
 textarea.innerText = "some text inner";
 
-let keyboardArrKey = [
+const keyboardArrKey = [
   {
     code: "Backquote",
     letter: "`",
@@ -475,17 +475,17 @@ function keyClicked(code) {
     .classList.add("clicked");
 }
 
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", (e) => {
   keyClicked(e.code);
 });
 
-document.addEventListener("keyup", function (e) {
+document.addEventListener("keyup", (e) => {
   document
     .querySelector(`.keyboard .k-key[data-code="${e.code}"]`)
     .classList.remove("clicked");
 });
 
-document.querySelectorAll(".keyboard .k-key").forEach(function (el) {
+document.querySelectorAll(".keyboard .k-key").forEach((el) => {
   el.addEventListener("mousedown", function () {
     this.classList.add("clicked");
   });
@@ -497,11 +497,26 @@ document.querySelectorAll(".keyboard .k-key").forEach(function (el) {
 //  ------------ drawing letters when shift on ------------
 
 function drawEn() {
-  // console.log("drawEnShift");
   for (let i = 0; i < keyboardArrKey.length; i++) {
     document.querySelector(
       `[data-code='${keyboardArrKey[i].code}']`
     ).innerHTML = keyboardArrKey[i].letter;
+  }
+}
+
+function drawRu() {
+  for (let i = 0; i < keyboardArrKey.length; i++) {
+    document.querySelector(
+      `[data-code='${keyboardArrKey[i].code}']`
+    ).innerHTML = keyboardArrKey[i].letterRu;
+  }
+}
+
+function drawEnRu() {
+  if (!ifRuLang) {
+    drawEn();
+  } else {
+    drawRu();
   }
 }
 
@@ -523,28 +538,19 @@ function drawEnRuShift() {
 
 const leftShift = document.querySelector("[data-code='ShiftLeft']");
 leftShift.addEventListener("mousedown", drawEnRuShift);
-leftShift.addEventListener("mouseup", function () {
-  console.log("check func start");
-  if (!ifRuLang) {
-    drawEn();
-  } else {
-    drawRu();
-  }
+leftShift.addEventListener("mouseup", () => {
+  drawEnRu();
 });
 
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", (e) => {
   if (e.code == "ShiftLeft" || e.code == "ShiftRight") {
     drawEnRuShift();
   }
 });
 
-document.addEventListener("keyup", function (e) {
-  if (e.code == "ShiftLeft" || e.code == "ShiftRight") {
-    if (!ifRuLang) {
-      drawEn();
-    } else {
-      drawRu();
-    }
+document.addEventListener("keyup", (e) => {
+  if (e.code === "ShiftLeft" || e.code === "ShiftRight") {
+    drawEnRu();
   }
 });
 
@@ -560,7 +566,7 @@ const capslockDraw = function () {
       .querySelector("[data-code='CapsLock']")
       .classList.add("border-colored");
   } else {
-    drawEn();
+    drawEnRu();
     ifCapsLockOn = false;
     document
       .querySelector("[data-code='CapsLock']")
@@ -569,28 +575,19 @@ const capslockDraw = function () {
 };
 
 const capsLock = document.querySelector("[data-code='CapsLock']");
-capsLock.addEventListener("click", function () {
+capsLock.addEventListener("click", () => {
   capslockDraw();
 });
 
-document.addEventListener("keydown", function (e) {
-  if (e.code == "CapsLock") {
+document.addEventListener("keydown", (e) => {
+  if (e.code === "CapsLock") {
     capslockDraw();
   }
 });
 
 // drawing letters when RuOn on
 
-function drawRu() {
-  // console.log("drawEnShift");
-  for (let i = 0; i < keyboardArrKey.length; i++) {
-    document.querySelector(
-      `[data-code='${keyboardArrKey[i].code}']`
-    ).innerHTML = keyboardArrKey[i].letterRu;
-  }
-}
-
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keydown", (e) => {
   if (e.code == "AltLeft" && e.ctrlKey == true) {
     if (!ifRuLang) {
       drawRu();
@@ -602,28 +599,22 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-// leftShift.addEventListener("mouseup", initEn);
+// -------------- drawing in textarea ------------------
 
-// class BUTTON {
-//   constructor(mainData, secondaryData) {
-//     if (!mainData) throw new Error("Dont have data");
-//     this._mainData = mainData;
-//     this._secondaryData = secondaryData;
-//   }
+function drawSymbol(target) {
+  const addedSymbol = target.innerHTML;
+  console.log(addedSymbol);
+  const prevText = textarea.innerHTML;
+  textarea.innerHTML = prevText + addedSymbol;
+}
 
-//   _mainData;
-//   _secondaryData;
-
-//   _initButton() {
-//     const btn = document.createElement("button");
-//     btn.classList.add("btn");
-
-//     const keyboard = document.querySelector("keyboard");
-//     keyboard.appendChild(btn);
-//   }
-// }
-
-// document.addEventListener("keyup", function (e) {
-//   document.querySelectorAll(".keyboard .k-key").forEach(function (el) {
-//     el.classList.remove("active");
-//   });
+keyboard.addEventListener("click", (e) => {
+  const { target } = e;
+  // console.log("delegation work");
+  // console.log(e);
+  if (target.className !== "k-key") {
+    // console.log("not key");
+  } else {
+    drawSymbol(target);
+  }
+});
