@@ -1,5 +1,4 @@
 // ------------ local storage start ----------------
-
 let ifRuLang;
 
 const textarea = document.createElement('textarea');
