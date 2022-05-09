@@ -270,7 +270,7 @@ textarea {
 }
 
 .keyboard {
-  width: 863px;
+  width: 862px;
   margin: 0 auto;
   background-color: rgb(235, 235, 235);
   display: block;
@@ -285,9 +285,10 @@ textarea {
   height: 50px;
   border: 1px solid black;
   margin: 3px;
-  padding: 5px;
+  padding: 9px;
   cursor: pointer;
   transition: 0.3s;
+  border-radius: 3px;
 }
 
 .k-key:nth-child(14) {
@@ -303,7 +304,7 @@ textarea {
 }
 
 .k-key:nth-child(42) {
-  width: 120px;
+  width: 122px;
 }
 
 .k-key:nth-child(43) {
@@ -311,11 +312,11 @@ textarea {
 }
 
 .k-key:nth-child(55) {
-  width: 110px;
+  width: 112px;
 }
 
 .k-key:nth-child(59) {
-  width: 395px;
+  width: 396px;
 }
 
 .k-key:hover {
@@ -333,6 +334,13 @@ textarea {
 
 .border-colored {
   border: 1px solid rgba(161, 50, 50, 0.8);
+}
+
+.text {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */
